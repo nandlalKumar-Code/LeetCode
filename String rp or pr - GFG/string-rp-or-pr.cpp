@@ -7,50 +7,55 @@ using namespace std;
 //User function Template for C++
 class Solution{
 private:
-    vector<long long>removeFunc(char c1,char c2,string S){
-        long long cnt1 = 0, cnt2 = 0;
-        stack<char> s1, s2;
-        s1.push(S[0]);
-        char temp = S[0];
+    
+    vector<long long> removeFunc(char ch1,char ch2,string s){
+        long long  n=s.size(),cnt1=0,cnt2=0;
+        stack<char>st1,st2;
         
-        for (int i = 1; i < S.length(); i++) {
-            if (!s1.empty() && S[i] == c2 && s1.top() == c1) {
-                s1.pop();
+        //performing for "pr"/"rp" substring
+        st1.push(s[0]);
+        for(int i=1;i<n;i++){
+            if(!st1.empty() && s[i]==ch2 && st1.top()==ch1){
                 cnt1++;
-            } else {
-                s1.push(S[i]);
+                st1.pop();
+            }
+            else{
+                st1.push(s[i]);
             }
         }
         
-        s2.push(s1.top());
-        temp = s2.top();
-        s1.pop();
+        // cout<<cnt1<<" ";
+        //performing for "rp"/"pr" substring using stack 1
+        st2.push(st1.top());
+        st1.pop();
         
-        while (!s1.empty()) {
-            if (!s2.empty() && s1.top() == c2 && s2.top() == c1) {
+        while(st1.empty()==false){
+            if(!st2.empty() && st1.top()==ch2 && st2.top()==ch1){
                 cnt2++;
-                s2.pop();
-            } else {
-                s2.push(s1.top());
+                st2.pop();
             }
-            s1.pop();
+            else{
+                st2.push(st1.top());
+            }
+            st1.pop();
         }
+        // cout<<cnt2<<" END"<<endl;
         
-        vector<long long> ans;
-        
-        if (c1 == 'p') {
-            ans.push_back(cnt1); ans.push_back(cnt2);
-        } else {
-            ans.push_back(cnt2); ans.push_back(cnt1);
+        vector<long long>ans;
+        if(ch1=='p'){
+            ans.push_back(cnt1);
+            ans.push_back(cnt2);
         }
-     
-        return ans; 
-        
+        else{
+            ans.push_back(cnt2);
+            ans.push_back(cnt1);
+        }
+        return ans;
     }
 public:
     long long solve(int X,int Y,string S){
       //code here
-      vector<long long>ans;
+      vector<long long> ans;
       if(X>Y) ans=removeFunc('p','r',S);
       else ans=removeFunc('r','p',S);
       
