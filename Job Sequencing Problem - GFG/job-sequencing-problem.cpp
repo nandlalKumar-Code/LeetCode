@@ -45,7 +45,7 @@ class Solution
             int deadline=maxHeap.top().second-1;
             maxHeap.pop();
             
-            while(visited[deadline]==1){
+            while(deadline>=0 && visited[deadline]==1){
                 deadline--;
             }
             
